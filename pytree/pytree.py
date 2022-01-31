@@ -14,7 +14,7 @@ SPACE_PREFIX = "    "
 
 ######################################
 # DirectoryTree class
-######################################
+###################################### 
 
 class DirectoryTree:
     def __init__(self, root_dir, dir_only=False, output_file=sys.stdout):
@@ -32,9 +32,13 @@ class DirectoryTree:
     # loops for every entry.
     def generate(self):
         tree = self._generator.build_tree()
+        # this checks to see if an output file was selected
         if self._output_file != sys.stdout:
+            # These two statements will move outputs into a commented out section of a file
+            # It moves the items one section to the right to fit in the start of the ''' comment
             tree.insert(0, "```")
             tree.append("```")
+            # This opens and writes to the selected output file by the user
             self._output_file = open(
                 self._output_file, mode="w", encoding="UTF-8"
             )
@@ -106,7 +110,10 @@ class _TreeGenerator:
         # appends a new directroy to ._tree. each is represented with a string
         # containing a prefix, connector, name and a final seperator
         # (os.sep) means that the separator is using the OS specific separator 
-        self._tree.append(f"{prefix}{connector} {directory.name}{os.sep}")
+
+        # This function will not print hidden directories yet files within will print
+        if not directory.name.startswith('.'):
+            self._tree.append(f"{prefix}{connector} {directory.name}{os.sep}")
         # this updates prefix according to the index of the entry
         if index != entries_count - 1:
             prefix += PIPE_PREFIX 
@@ -121,7 +128,11 @@ class _TreeGenerator:
         self._tree.append(prefix.rstrip())
 
     def _add_file(self, file, prefix, connector):
-        self._tree.append(f"{prefix}{connector} {file.name}")
+    #    self._tree.append(f"{prefix}{connector} {file.name}")
+
+        # This commented out function will exclude all hidden files
+       if not file.name.startswith('.'):
+            self._tree.append(f"{prefix}{connector} {file.name}") 
 
     def _prepare_entries(self, directory):
         entries = directory.iterdir()

@@ -75,7 +75,13 @@ def parse_cmd_line_arguments():
         default=sys.stdout,
         help="Generates a full directory tree and saves it to a file. For alternative output files, specify the path in the command.",
     )
-
+#
+#   parser.add_argument(
+ #       "-a",
+  #      "--add-hidden",
+   #     action="store_true",
+    #    help="Generates directory tree with hidden files included.",
+    #)
     # this parses the above arguments using .parse_args()
     # this returns a Namespace object with all arguments and can be accessed with .
     return parser.parse_args()
