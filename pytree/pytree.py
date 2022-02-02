@@ -97,6 +97,8 @@ class _TreeGenerator:
             # if it is, it then used the ._add_directory path to add it
             # if not, it uses the else ._add_file path to create a file entry
             if entry.is_dir():
+                if directory.name.startswith('.'):
+                    return
                 self._add_directory(
                     entry, index, entries_count, prefix, connector
                 )
@@ -114,6 +116,9 @@ class _TreeGenerator:
         # This function will not print hidden directories yet files within will print
         if not directory.name.startswith('.'):
             self._tree.append(f"{prefix}{connector} {directory.name}{os.sep}")
+        
+      #  if directory.name.startswith('.'):
+            
         # this updates prefix according to the index of the entry
         if index != entries_count - 1:
             prefix += PIPE_PREFIX 
@@ -124,13 +129,13 @@ class _TreeGenerator:
             directory=directory,
             prefix=prefix,
         )
-        # appends a new prefix separate of the contnet in current directory from the next one
+        # appends a new prefix separate of the content in current directory from the next one
         self._tree.append(prefix.rstrip())
 
     def _add_file(self, file, prefix, connector):
     #    self._tree.append(f"{prefix}{connector} {file.name}")
 
-        # This commented out function will exclude all hidden files
+        # This if function will ignore all hidden files that start with .
        if not file.name.startswith('.'):
             self._tree.append(f"{prefix}{connector} {file.name}") 
 
